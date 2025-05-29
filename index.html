@@ -2,10 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Bloom Salon - Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             /* Paleta de Cores Clássica: Terracota e Neutros */
@@ -27,6 +28,8 @@
             --hover-shadow: 0 12px 40px rgba(193, 107, 88, 0.25);
             --sidebar-bg: #2C2C2C; /* Cinza escuro para sidebar */
             --sidebar-hover: #3A3A3A;
+            --sidebar-width: 280px;
+            --mobile-header-height: 60px;
         }
 
         * {
@@ -45,11 +48,30 @@
         .container {
             display: flex;
             min-height: 100vh;
+            position: relative;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         /* Sidebar */
         .sidebar {
-            width: 280px;
+            width: var(--sidebar-width);
             background: var(--sidebar-bg);
             color: var(--white);
             padding: 0;
@@ -57,6 +79,8 @@
             flex-direction: column;
             box-shadow: 4px 0 20px rgba(26, 26, 26, 0.15);
             position: relative;
+            transition: transform 0.3s ease;
+            z-index: 1000;
         }
 
         .logo-container {
@@ -116,6 +140,7 @@
             overflow-y: auto;
             background: var(--white);
             position: relative;
+            transition: transform 0.3s ease;
         }
 
         .page-section {
@@ -934,14 +959,68 @@
             margin-top: 15px;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* Overlay for sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 992px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
             .sidebar {
-                width: 250px;
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                transform: translateX(-100%);
+                z-index: 1000;
+            }
+            
+            .sidebar.sidebar-active {
+                transform: translateX(0);
             }
             
             .main-content {
-                padding: 20px;
+                padding: var(--mobile-header-height) 15px 15px;
+                width: 100%;
+            }
+            
+            .header {
+                padding-top: 20px;
+                margin-top: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: center;
             }
             
             .dashboard-grid {
@@ -972,28 +1051,83 @@
             .client-details-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .metric-value {
+                font-size: 28px;
+            }
+            
+            .date-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .date-nav-btn {
+                width: 100%;
+                padding: 10px;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .chart-small {
+                height: 180px;
+            }
+            
+            .btn {
+                padding: 12px 18px;
+                font-size: 14px;
+            }
         }
 
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--white);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @media (max-width: 576px) {
+            .services {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-card {
+                padding: 15px;
+            }
+            
+            .service-count {
+                font-size: 24px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .client-details-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .client-details-info {
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Overlay for sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
     <div class="container">
         <!-- Sidebar -->
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <div class="logo-container">
                 <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-oa5m6ybbs46yxbSJaHhvIZkDNJ4Eg1.png" alt="Bloom Salon Logo" class="logo-img">
                 <div class="logo-text">Bloom Salon</div>
@@ -1529,6 +1663,11 @@
                 document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
                 const pageId = item.getAttribute('data-page');
                 document.getElementById(pageId).classList.add('active');
+                
+                // Fechar sidebar em dispositivos móveis
+                if (window.innerWidth <= 992) {
+                    closeSidebar();
+                }
             });
         });
 
@@ -1544,6 +1683,20 @@
             updateDateDisplay();
             refreshSchedule();
         });
+
+        // Sidebar functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('sidebar-active');
+            overlay.style.display = sidebar.classList.contains('sidebar-active') ? 'block' : 'none';
+        }
+        
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('sidebar-active');
+            document.getElementById('sidebarOverlay').style.display = 'none';
+        }
 
         // Schedule functions
         function createScheduleGrid() {
@@ -1883,6 +2036,12 @@
 
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu button
+            document.getElementById('mobileMenuBtn').addEventListener('click', toggleSidebar);
+            
+            // Overlay click to close sidebar
+            document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+            
             // Search functionality
             document.getElementById('clientSearch').addEventListener('input', filterClients);
             
