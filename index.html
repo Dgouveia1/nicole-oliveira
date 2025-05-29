@@ -8,20 +8,25 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary-color: #c39086;
-            --primary-dark: #a67a70;
-            --primary-light: #e2bdb5;
-            --secondary-color: #d4a59a;
-            --accent-color: #f4e4e1;
-            --text-color: #5a4a47;
-            --text-light: #fff;
-            --confirmed-color: #81c784;
-            --pending-color: #ffb74d;
-            --cancelled-color: #e57373;
-            --border-color: #e8d5d1;
-            --sidebar-bg: linear-gradient(135deg, #c39086 0%, #a67a70 100%);
-            --card-shadow: 0 8px 32px rgba(195, 144, 134, 0.15);
-            --hover-shadow: 0 12px 40px rgba(195, 144, 134, 0.25);
+            /* Paleta de Cores Clássica: Terracota e Neutros */
+            --primary-color: #C16B58; /* Terracota - Cor Principal */
+            --primary-dark: #A85A48; /* Terracota mais escuro */
+            --primary-light: #D4887A; /* Terracota mais claro */
+            --white: #FFFFFF; /* Branco puro */
+            --gray-light: #E0E0E0; /* Cinza claro */
+            --gray-medium: #808080; /* Cinza médio */
+            --black: #1A1A1A; /* Preto suavizado */
+            
+            /* Cores de Status */
+            --confirmed-color: #4CAF50;
+            --pending-color: #FF9800;
+            --cancelled-color: #F44336;
+            
+            /* Sombras e Efeitos */
+            --card-shadow: 0 8px 32px rgba(193, 107, 88, 0.15);
+            --hover-shadow: 0 12px 40px rgba(193, 107, 88, 0.25);
+            --sidebar-bg: #2C2C2C; /* Cinza escuro para sidebar */
+            --sidebar-hover: #3A3A3A;
         }
 
         * {
@@ -31,8 +36,8 @@
         }
 
         body {
-            background: linear-gradient(135deg, #faf8f7 0%, #f4e4e1 100%);
-            color: var(--text-color);
+            background: linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%);
+            color: var(--black);
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
         }
@@ -46,68 +51,62 @@
         .sidebar {
             width: 280px;
             background: var(--sidebar-bg);
-            color: var(--text-light);
+            color: var(--white);
             padding: 0;
             display: flex;
             flex-direction: column;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 4px 0 20px rgba(26, 26, 26, 0.15);
             position: relative;
-            overflow: hidden;
-        }
-
-        .sidebar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="petals" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23petals)"/></svg>');
-            opacity: 0.3;
         }
 
         .logo-container {
             padding: 30px 20px;
             text-align: center;
-            position: relative;
-            z-index: 2;
+            border-bottom: 1px solid var(--gray-medium);
+        }
+
+        .logo-img {
+            width: 120px;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 15px;
         }
 
         .logo-text {
             font-family: 'Dancing Script', cursive;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
             margin-bottom: 5px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            color: var(--white);
         }
 
         .logo-subtitle {
-            font-size: 12px;
-            opacity: 0.9;
-            letter-spacing: 2px;
+            font-size: 11px;
+            opacity: 0.8;
+            letter-spacing: 1px;
             text-transform: uppercase;
+            color: var(--gray-light);
         }
 
         .menu-item {
             padding: 18px 25px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 2;
+            transition: all 0.3s ease;
             border-left: 4px solid transparent;
             font-weight: 500;
+            color: var(--gray-light);
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-left-color: rgba(255, 255, 255, 0.8);
-            transform: translateX(5px);
+            background: var(--sidebar-hover);
+            border-left-color: var(--primary-color);
+            color: var(--white);
         }
 
         .menu-item.active {
-            background: rgba(255, 255, 255, 0.2);
-            border-left-color: var(--text-light);
-            transform: translateX(5px);
+            background: var(--sidebar-hover);
+            border-left-color: var(--primary-color);
+            color: var(--white);
         }
 
         /* Main Content */
@@ -115,7 +114,8 @@
             flex: 1;
             padding: 30px;
             overflow-y: auto;
-            background: transparent;
+            background: var(--white);
+            position: relative;
         }
 
         .page-section {
@@ -140,20 +140,33 @@
 
         .header {
             margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--gray-light);
+            padding-bottom: 20px;
+        }
+
+        .header-left {
+            flex: 1;
         }
 
         .page-title {
             font-family: 'Dancing Script', cursive;
             font-size: 36px;
             font-weight: 600;
-            color: var(--primary-dark);
+            color: var(--black);
             margin-bottom: 10px;
         }
 
         .page-subtitle {
-            color: var(--text-color);
-            opacity: 0.8;
+            color: var(--gray-medium);
             font-size: 16px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
         }
 
         /* Dashboard Cards */
@@ -165,12 +178,12 @@
         }
 
         .card {
-            background: white;
+            background: var(--white);
             border-radius: 20px;
             padding: 25px;
             box-shadow: var(--card-shadow);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--gray-light);
             position: relative;
             overflow: hidden;
         }
@@ -182,7 +195,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
         }
 
         .card:hover {
@@ -193,7 +206,7 @@
         .card-title {
             font-size: 18px;
             font-weight: 600;
-            color: var(--primary-dark);
+            color: var(--black);
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -213,8 +226,7 @@
 
         .metric-label {
             font-size: 14px;
-            color: var(--text-color);
-            opacity: 0.8;
+            color: var(--gray-medium);
         }
 
         .metric-change {
@@ -226,12 +238,12 @@
         }
 
         .metric-change.positive {
-            background: rgba(129, 199, 132, 0.2);
+            background: rgba(76, 175, 80, 0.2);
             color: #4caf50;
         }
 
         .metric-change.negative {
-            background: rgba(229, 115, 115, 0.2);
+            background: rgba(244, 67, 54, 0.2);
             color: #f44336;
         }
 
@@ -255,13 +267,13 @@
         }
 
         .service-card {
-            background: white;
+            background: var(--white);
             border-radius: 16px;
             padding: 20px;
             text-align: center;
             box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--gray-light);
         }
 
         .service-card:hover {
@@ -270,7 +282,7 @@
         }
 
         .service-name {
-            color: var(--primary-dark);
+            color: var(--black);
             font-weight: 600;
             margin-bottom: 10px;
             font-size: 16px;
@@ -283,13 +295,50 @@
             color: var(--primary-color);
         }
 
+        /* Date Navigation */
+        .date-navigation {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-light);
+        }
+
+        .date-nav-btn {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .date-nav-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .current-date-display {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            flex: 1;
+            text-align: center;
+        }
+
         /* Schedule Grid */
         .schedule-container {
-            background: white;
+            background: var(--white);
             border-radius: 20px;
             padding: 25px;
             box-shadow: var(--card-shadow);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--gray-light);
             overflow-x: auto;
         }
 
@@ -298,18 +347,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            border-bottom: 1px solid var(--gray-light);
+            padding-bottom: 15px;
         }
 
         .schedule-title {
             font-size: 20px;
             font-weight: 600;
-            color: var(--primary-dark);
-        }
-
-        .date-display {
-            font-size: 16px;
-            color: var(--text-color);
-            opacity: 0.8;
+            color: var(--black);
         }
 
         .schedule-grid-container {
@@ -319,19 +364,19 @@
 
         .time-column {
             width: 80px;
-            border-right: 1px solid var(--border-color);
+            border-right: 1px solid var(--gray-light);
         }
 
         .time-slot {
             height: 60px;
             padding: 5px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--gray-light);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 12px;
             font-weight: 500;
-            color: var(--text-color);
+            color: var(--gray-medium);
         }
 
         .schedule-grid {
@@ -341,7 +386,7 @@
 
         .service-column {
             flex: 1;
-            border-right: 1px solid var(--border-color);
+            border-right: 1px solid var(--gray-light);
             min-width: 150px;
         }
 
@@ -351,19 +396,19 @@
 
         .service-column-header {
             height: 50px;
-            background: var(--accent-color);
+            background: var(--gray-light);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            color: var(--primary-dark);
+            color: var(--black);
             text-transform: capitalize;
-            border-bottom: 2px solid var(--primary-light);
+            border-bottom: 2px solid var(--primary-color);
         }
 
         .appointment-slot {
             height: 60px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--gray-light);
             padding: 5px;
             position: relative;
             cursor: pointer;
@@ -371,7 +416,7 @@
         }
 
         .appointment-slot:hover {
-            background-color: rgba(195, 144, 134, 0.05);
+            background-color: rgba(193, 107, 88, 0.05);
         }
 
         .appointment {
@@ -395,28 +440,278 @@
         }
 
         .appointment.confirmed {
-            background: linear-gradient(135deg, rgba(129, 199, 132, 0.2), rgba(129, 199, 132, 0.3));
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.3));
             border: 1px solid var(--confirmed-color);
         }
 
         .appointment.pending {
-            background: linear-gradient(135deg, rgba(255, 183, 77, 0.2), rgba(255, 183, 77, 0.3));
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(255, 152, 0, 0.3));
             border: 1px solid var(--pending-color);
         }
 
         .appointment.cancelled {
-            background: linear-gradient(135deg, rgba(229, 115, 115, 0.2), rgba(229, 115, 115, 0.3));
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(244, 67, 54, 0.3));
             border: 1px solid var(--cancelled-color);
         }
 
         .appointment-name {
             font-weight: 600;
             margin-bottom: 2px;
+            color: var(--black);
         }
 
         .appointment-status {
             font-size: 10px;
-            opacity: 0.8;
+            color: var(--gray-medium);
+        }
+
+        /* Clients Section - New Table Format */
+        .clients-controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-container {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            color: var(--black);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(193, 107, 88, 0.1);
+        }
+
+        .filters-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            padding: 8px 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 20px;
+            background: var(--white);
+            color: var(--gray-medium);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .filter-tag.active {
+            background: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        .filter-tag:hover {
+            border-color: var(--primary-color);
+        }
+
+        .clients-table-container {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-light);
+            overflow-x: auto;
+        }
+
+        .clients-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .clients-table th {
+            background: var(--gray-light);
+            color: var(--black);
+            font-weight: 600;
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 2px solid var(--primary-color);
+            font-size: 14px;
+        }
+
+        .clients-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid var(--gray-light);
+            color: var(--black);
+            font-size: 14px;
+        }
+
+        .clients-table tr:hover {
+            background: rgba(193, 107, 88, 0.05);
+        }
+
+        .client-name-cell {
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .client-tags-cell {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .tag {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .client-actions-cell {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+
+        /* Client Details Modal */
+        .client-details-modal .modal-content {
+            width: 700px;
+            max-width: 95%;
+        }
+
+        .client-details-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gray-light);
+        }
+
+        .client-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .client-details-info h3 {
+            font-size: 24px;
+            color: var(--black);
+            margin-bottom: 5px;
+        }
+
+        .client-details-info p {
+            color: var(--gray-medium);
+            margin-bottom: 3px;
+        }
+
+        .client-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--black);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            color: var(--gray-medium);
+            font-size: 14px;
+        }
+
+        .client-tags-detail {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .appointments-history {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid var(--gray-light);
+        }
+
+        .history-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 20px;
+        }
+
+        .appointment-history-item {
+            background: var(--gray-light);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .appointment-history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .appointment-service {
+            font-weight: 600;
+            color: var(--black);
+            text-transform: capitalize;
+        }
+
+        .appointment-date {
+            color: var(--gray-medium);
+            font-size: 12px;
+        }
+
+        .appointment-details {
+            color: var(--gray-medium);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .no-appointments {
+            text-align: center;
+            color: var(--gray-medium);
+            font-style: italic;
+            padding: 20px;
         }
 
         /* Modal */
@@ -427,7 +722,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(26, 26, 26, 0.5);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -435,13 +730,16 @@
         }
 
         .modal-content {
-            background: white;
+            background: var(--white);
             padding: 30px;
             border-radius: 20px;
             width: 500px;
             max-width: 90%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(26, 26, 26, 0.3);
             animation: modalSlideIn 0.3s ease-out;
+            border: 1px solid var(--gray-light);
         }
 
         @keyframes modalSlideIn {
@@ -461,20 +759,20 @@
             align-items: center;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--gray-light);
         }
 
         .modal-title {
             font-size: 22px;
             font-weight: 600;
-            color: var(--primary-dark);
+            color: var(--black);
             font-family: 'Dancing Script', cursive;
         }
 
         .close-btn {
             cursor: pointer;
             font-size: 24px;
-            color: var(--text-color);
+            color: var(--gray-medium);
             transition: color 0.2s ease;
         }
 
@@ -490,28 +788,70 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: var(--text-color);
+            color: var(--black);
         }
 
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid var(--border-color);
+            border: 2px solid var(--gray-light);
             border-radius: 12px;
             font-size: 14px;
             transition: all 0.3s ease;
             font-family: 'Poppins', sans-serif;
+            color: var(--black);
         }
 
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(195, 144, 134, 0.1);
+            box-shadow: 0 0 0 3px rgba(193, 107, 88, 0.1);
         }
 
         .form-group textarea {
             resize: vertical;
             min-height: 80px;
+        }
+
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            min-height: 50px;
+            cursor: text;
+        }
+
+        .tags-input:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(193, 107, 88, 0.1);
+        }
+
+        .tag-item {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .tag-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
+            font-family: 'Poppins', sans-serif;
+            color: var(--black);
         }
 
         .btn {
@@ -526,43 +866,57 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
+            background: var(--primary-color);
+            color: var(--white);
         }
 
         .btn-primary:hover {
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(195, 144, 134, 0.4);
+            box-shadow: 0 8px 25px rgba(193, 107, 88, 0.4);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #81c784, #66bb6a);
-            color: white;
+            background: var(--confirmed-color);
+            color: var(--white);
         }
 
         .btn-success:hover {
+            background: #45a049;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(129, 199, 132, 0.4);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #e57373, #ef5350);
-            color: white;
+            background: var(--cancelled-color);
+            color: var(--white);
         }
 
         .btn-danger:hover {
+            background: #da190b;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(229, 115, 115, 0.4);
+            box-shadow: 0 8px 25px rgba(244, 67, 54, 0.4);
         }
 
         .btn-warning {
-            background: linear-gradient(135deg, #ffb74d, #ffa726);
-            color: white;
+            background: var(--pending-color);
+            color: var(--white);
         }
 
         .btn-warning:hover {
+            background: #e68900;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 183, 77, 0.4);
+            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--gray-medium);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: #666666;
+            transform: translateY(-2px);
         }
 
         .modal-footer {
@@ -571,7 +925,7 @@
             gap: 15px;
             margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid var(--gray-light);
         }
 
         .appointment-actions {
@@ -597,6 +951,27 @@
             .services {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .clients-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container {
+                min-width: auto;
+            }
+
+            .filters-container {
+                justify-content: center;
+            }
+
+            .client-details-modal .modal-content {
+                width: 95%;
+            }
+
+            .client-details-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Loading Animation */
@@ -606,7 +981,7 @@
             height: 20px;
             border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top-color: white;
+            border-top-color: var(--white);
             animation: spin 1s ease-in-out infinite;
         }
 
@@ -620,11 +995,13 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo-container">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-oa5m6ybbs46yxbSJaHhvIZkDNJ4Eg1.png" alt="Bloom Salon Logo" class="logo-img">
                 <div class="logo-text">Bloom Salon</div>
                 <div class="logo-subtitle">by Nicole Oliveira</div>
             </div>
             <div class="menu-item active" data-page="dashboard">Painel Gerencial</div>
             <div class="menu-item" data-page="agenda">Agenda</div>
+            <div class="menu-item" data-page="clients">Clientes</div>
         </div>
 
         <!-- Main Content -->
@@ -632,8 +1009,10 @@
             <!-- Dashboard Section -->
             <div class="page-section active" id="dashboard">
                 <div class="header">
-                    <h1 class="page-title">Painel Gerencial</h1>
-                    <p class="page-subtitle">Visão geral do seu negócio</p>
+                    <div class="header-left">
+                        <h1 class="page-title">Painel Gerencial</h1>
+                        <p class="page-subtitle">Visão geral do seu negócio</p>
+                    </div>
                 </div>
 
                 <!-- Metrics Cards -->
@@ -646,8 +1025,8 @@
                     </div>
                     
                     <div class="card metric-card">
-                        <div class="card-title">Receita Semanal</div>
-                        <div class="metric-value">R$ 2.850</div>
+                        <div class="card-title">Agendamentos da Semana</div>
+                        <div class="metric-value">150</div>
                         <div class="metric-label">esta semana</div>
                         <div class="metric-change positive">+8% vs semana anterior</div>
                     </div>
@@ -677,7 +1056,7 @@
                     </div>
                     
                     <div class="card">
-                        <div class="card-title">Receita Semanal</div>
+                        <div class="card-title">Agendamentos Semanais</div>
                         <div class="chart-container chart-small">
                             <canvas id="revenueChart"></canvas>
                         </div>
@@ -705,8 +1084,17 @@
             <!-- Agenda Section -->
             <div class="page-section" id="agenda">
                 <div class="header">
-                    <h1 class="page-title">Agenda</h1>
-                    <p class="page-subtitle">Gerencie seus agendamentos</p>
+                    <div class="header-left">
+                        <h1 class="page-title">Agenda</h1>
+                        <p class="page-subtitle">Gerencie seus agendamentos</p>
+                    </div>
+                </div>
+
+                <!-- Date Navigation -->
+                <div class="date-navigation">
+                    <button class="date-nav-btn" id="prevDay">← Anterior</button>
+                    <div class="current-date-display" id="currentDateDisplay"></div>
+                    <button class="date-nav-btn" id="nextDay">Próximo →</button>
                 </div>
 
                 <!-- Services Summary -->
@@ -733,7 +1121,6 @@
                 <div class="schedule-container">
                     <div class="schedule-header">
                         <div class="schedule-title">Agenda do Dia</div>
-                        <div class="date-display" id="current-date"></div>
                     </div>
                     
                     <div class="schedule-grid-container">
@@ -762,122 +1149,59 @@
                             <div class="time-slot">18:00</div>
                         </div>
 
-                        <div class="schedule-grid">
-                            <!-- Maquiagem Column -->
-                            <div class="service-column" data-service="maquiagem">
-                                <div class="service-column-header">Maquiagem</div>
-                                <div class="appointment-slot" data-time="08:00"></div>
-                                <div class="appointment-slot" data-time="08:30"></div>
-                                <div class="appointment-slot" data-time="09:00">
-                                    <div class="appointment confirmed" data-id="1">
-                                        <div class="appointment-name">Maria Silva</div>
-                                        <div class="appointment-status">confirmado</div>
-                                    </div>
-                                </div>
-                                <div class="appointment-slot" data-time="09:30"></div>
-                                <div class="appointment-slot" data-time="10:00"></div>
-                                <div class="appointment-slot" data-time="10:30"></div>
-                                <div class="appointment-slot" data-time="11:00"></div>
-                                <div class="appointment-slot" data-time="11:30"></div>
-                                <div class="appointment-slot" data-time="12:00"></div>
-                                <div class="appointment-slot" data-time="12:30"></div>
-                                <div class="appointment-slot" data-time="13:00"></div>
-                                <div class="appointment-slot" data-time="13:30"></div>
-                                <div class="appointment-slot" data-time="14:00"></div>
-                                <div class="appointment-slot" data-time="14:30"></div>
-                                <div class="appointment-slot" data-time="15:00"></div>
-                                <div class="appointment-slot" data-time="15:30"></div>
-                                <div class="appointment-slot" data-time="16:00"></div>
-                                <div class="appointment-slot" data-time="16:30"></div>
-                                <div class="appointment-slot" data-time="17:00"></div>
-                                <div class="appointment-slot" data-time="17:30"></div>
-                                <div class="appointment-slot" data-time="18:00"></div>
-                            </div>
-
-                            <!-- Unhas Column -->
-                            <div class="service-column" data-service="unhas">
-                                <div class="service-column-header">Unhas</div>
-                                <div class="appointment-slot" data-time="08:00"></div>
-                                <div class="appointment-slot" data-time="08:30"></div>
-                                <div class="appointment-slot" data-time="09:00"></div>
-                                <div class="appointment-slot" data-time="09:30"></div>
-                                <div class="appointment-slot" data-time="10:00"></div>
-                                <div class="appointment-slot" data-time="10:30"></div>
-                                <div class="appointment-slot" data-time="11:00">
-                                    <div class="appointment pending" data-id="2">
-                                        <div class="appointment-name">Joana Santos</div>
-                                        <div class="appointment-status">pendente</div>
-                                    </div>
-                                </div>
-                                <div class="appointment-slot" data-time="11:30"></div>
-                                <div class="appointment-slot" data-time="12:00"></div>
-                                <div class="appointment-slot" data-time="12:30"></div>
-                                <div class="appointment-slot" data-time="13:00"></div>
-                                <div class="appointment-slot" data-time="13:30"></div>
-                                <div class="appointment-slot" data-time="14:00"></div>
-                                <div class="appointment-slot" data-time="14:30"></div>
-                                <div class="appointment-slot" data-time="15:00"></div>
-                                <div class="appointment-slot" data-time="15:30"></div>
-                                <div class="appointment-slot" data-time="16:00"></div>
-                                <div class="appointment-slot" data-time="16:30"></div>
-                                <div class="appointment-slot" data-time="17:00"></div>
-                                <div class="appointment-slot" data-time="17:30"></div>
-                                <div class="appointment-slot" data-time="18:00"></div>
-                            </div>
-
-                            <!-- Cabelos Column -->
-                            <div class="service-column" data-service="cabelos">
-                                <div class="service-column-header">Cabelos</div>
-                                <div class="appointment-slot" data-time="08:00"></div>
-                                <div class="appointment-slot" data-time="08:30"></div>
-                                <div class="appointment-slot" data-time="09:00"></div>
-                                <div class="appointment-slot" data-time="09:30"></div>
-                                <div class="appointment-slot" data-time="10:00"></div>
-                                <div class="appointment-slot" data-time="10:30"></div>
-                                <div class="appointment-slot" data-time="11:00"></div>
-                                <div class="appointment-slot" data-time="11:30"></div>
-                                <div class="appointment-slot" data-time="12:00"></div>
-                                <div class="appointment-slot" data-time="12:30"></div>
-                                <div class="appointment-slot" data-time="13:00"></div>
-                                <div class="appointment-slot" data-time="13:30"></div>
-                                <div class="appointment-slot" data-time="14:00"></div>
-                                <div class="appointment-slot" data-time="14:30"></div>
-                                <div class="appointment-slot" data-time="15:00"></div>
-                                <div class="appointment-slot" data-time="15:30"></div>
-                                <div class="appointment-slot" data-time="16:00"></div>
-                                <div class="appointment-slot" data-time="16:30"></div>
-                                <div class="appointment-slot" data-time="17:00"></div>
-                                <div class="appointment-slot" data-time="17:30"></div>
-                                <div class="appointment-slot" data-time="18:00"></div>
-                            </div>
-
-                            <!-- Noivas Column -->
-                            <div class="service-column" data-service="noivas">
-                                <div class="service-column-header">Noivas</div>
-                                <div class="appointment-slot" data-time="08:00"></div>
-                                <div class="appointment-slot" data-time="08:30"></div>
-                                <div class="appointment-slot" data-time="09:00"></div>
-                                <div class="appointment-slot" data-time="09:30"></div>
-                                <div class="appointment-slot" data-time="10:00"></div>
-                                <div class="appointment-slot" data-time="10:30"></div>
-                                <div class="appointment-slot" data-time="11:00"></div>
-                                <div class="appointment-slot" data-time="11:30"></div>
-                                <div class="appointment-slot" data-time="12:00"></div>
-                                <div class="appointment-slot" data-time="12:30"></div>
-                                <div class="appointment-slot" data-time="13:00"></div>
-                                <div class="appointment-slot" data-time="13:30"></div>
-                                <div class="appointment-slot" data-time="14:00"></div>
-                                <div class="appointment-slot" data-time="14:30"></div>
-                                <div class="appointment-slot" data-time="15:00"></div>
-                                <div class="appointment-slot" data-time="15:30"></div>
-                                <div class="appointment-slot" data-time="16:00"></div>
-                                <div class="appointment-slot" data-time="16:30"></div>
-                                <div class="appointment-slot" data-time="17:00"></div>
-                                <div class="appointment-slot" data-time="17:30"></div>
-                                <div class="appointment-slot" data-time="18:00"></div>
-                            </div>
+                        <div class="schedule-grid" id="scheduleGrid">
+                            <!-- Schedule will be populated by JavaScript -->
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Clients Section -->
+            <div class="page-section" id="clients">
+                <div class="header">
+                    <div class="header-left">
+                        <h1 class="page-title">Clientes</h1>
+                        <p class="page-subtitle">Gerencie seus clientes</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="addClientBtn">+ Adicionar Cliente</button>
+                    </div>
+                </div>
+
+                <!-- Search and Filters -->
+                <div class="clients-controls">
+                    <div class="search-container">
+                        <input type="text" class="search-input" id="clientSearch" placeholder="Buscar por nome ou telefone...">
+                    </div>
+                    <div class="filters-container">
+                        <div class="filter-tag active" data-tag="all">Todos</div>
+                        <div class="filter-tag" data-tag="maquiagem">Maquiagem</div>
+                        <div class="filter-tag" data-tag="sobrancelha">Sobrancelha</div>
+                        <div class="filter-tag" data-tag="unha">Unha</div>
+                        <div class="filter-tag" data-tag="cabelo">Cabelo</div>
+                        <div class="filter-tag" data-tag="noiva">Noiva</div>
+                    </div>
+                </div>
+
+                <!-- Clients Table -->
+                <div class="clients-table-container">
+                    <table class="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Telefone</th>
+                                <th>Cidade</th>
+                                <th>Instagram</th>
+                                <th>Idade</th>
+                                <th>Cliente há</th>
+                                <th>Tags</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientsTableBody">
+                            <!-- Table content will be populated by JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -961,230 +1285,322 @@
         </div>
     </div>
 
+    <!-- Modal for Adding/Editing Clients -->
+    <div class="modal" id="clientModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="clientModalTitle">Novo Cliente</h3>
+                <span class="close-btn" id="closeClientModal">&times;</span>
+            </div>
+            <form id="clientForm">
+                <input type="hidden" id="clientId">
+                <div class="form-group">
+                    <label for="clientFullName">Nome Completo:</label>
+                    <input type="text" id="clientFullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientPhoneNumber">Telefone:</label>
+                    <input type="tel" id="clientPhoneNumber" placeholder="(11) 99999-9999" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientInstagram">Instagram:</label>
+                    <input type="text" id="clientInstagram" placeholder="@usuario">
+                </div>
+                <div class="form-group">
+                    <label for="clientCity">Cidade:</label>
+                    <input type="text" id="clientCity" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientBirthDate">Data de Nascimento:</label>
+                    <input type="date" id="clientBirthDate">
+                </div>
+                <div class="form-group">
+                    <label for="clientFirstExperience">Primeira Experiência:</label>
+                    <input type="date" id="clientFirstExperience">
+                </div>
+                <div class="form-group">
+                    <label>Tags:</label>
+                    <div class="tags-input" id="tagsInput">
+                        <input type="text" class="tag-input" id="tagInput" placeholder="Digite uma tag e pressione Enter">
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="deleteClientBtn" style="display: none;">Excluir</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Client Details -->
+    <div class="modal client-details-modal" id="clientDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalhes do Cliente</h3>
+                <span class="close-btn" id="closeClientDetailsModal">&times;</span>
+            </div>
+            
+            <div class="client-details-header">
+                <div class="client-avatar" id="clientAvatar">M</div>
+                <div class="client-details-info">
+                    <h3 id="clientDetailsName">Maria Silva</h3>
+                    <p id="clientDetailsPhone">📞 (11) 99999-1111</p>
+                    <p id="clientDetailsCity">📍 São Paulo</p>
+                </div>
+            </div>
+
+            <div class="client-details-grid">
+                <div class="detail-item">
+                    <div class="detail-label">Instagram</div>
+                    <div class="detail-value" id="clientDetailsInstagram">@maria_silva</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Idade</div>
+                    <div class="detail-value" id="clientDetailsAge">34 anos</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Cliente há</div>
+                    <div class="detail-value" id="clientDetailsExperience">1 ano</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Data de Nascimento</div>
+                    <div class="detail-value" id="clientDetailsBirthDate">15/05/1990</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Primeira Experiência</div>
+                    <div class="detail-value" id="clientDetailsFirstExperience">15/01/2024</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Serviços Preferidos</div>
+                    <div class="client-tags-detail" id="clientDetailsTags">
+                        <!-- Tags will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="appointments-history">
+                <div class="history-title">Últimos Atendimentos</div>
+                <div id="appointmentsHistoryContainer">
+                    <!-- Appointment history will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Current date display
-        function updateDate() {
-            const now = new Date();
+        // Global variables
+        let currentDate = new Date();
+        let appointments = [
+            { id: 1, name: "Maria Silva", phone: "(11) 99999-1111", service: "maquiagem", time: "09:00", status: "confirmado", observations: "Cliente preferencial, gosta de maquiagem natural", date: "2025-01-29" },
+            { id: 2, name: "Joana Santos", phone: "(11) 99999-2222", service: "unhas", time: "11:00", status: "pendente", observations: "Primeira vez no salão", date: "2025-01-29" },
+            { id: 3, name: "Ana Costa", phone: "(11) 99999-3333", service: "cabelos", time: "14:00", status: "confirmado", observations: "Corte e escova", date: "2025-01-29" },
+            { id: 4, name: "Beatriz Lima", phone: "(11) 99999-4444", service: "noivas", time: "10:00", status: "confirmado", observations: "Teste de penteado para casamento", date: "2025-01-30" },
+            { id: 5, name: "Carla Mendes", phone: "(11) 99999-5555", service: "maquiagem", time: "15:30", status: "pendente", observations: "Maquiagem para festa", date: "2025-01-30" },
+            { id: 6, name: "Diana Rocha", phone: "(11) 99999-6666", service: "unhas", time: "09:30", status: "confirmado", observations: "Esmaltação em gel", date: "2025-01-28" },
+            { id: 7, name: "Elena Ferreira", phone: "(11) 99999-7777", service: "cabelos", time: "16:00", status: "cancelado", observations: "Cancelou por motivos pessoais", date: "2025-01-28" },
+            { id: 8, name: "Fernanda Alves", phone: "(11) 99999-8888", service: "maquiagem", time: "13:00", status: "confirmado", observations: "Maquiagem para trabalho", date: "2025-01-31" },
+            // Histórico de atendimentos para os clientes
+            { id: 9, name: "Maria Silva", phone: "(11) 99999-1111", service: "maquiagem", time: "14:00", status: "confirmado", observations: "Maquiagem para casamento", date: "2025-01-15" },
+            { id: 10, name: "Maria Silva", phone: "(11) 99999-1111", service: "sobrancelha", time: "10:00", status: "confirmado", observations: "Design de sobrancelha", date: "2025-01-08" },
+            { id: 11, name: "Maria Silva", phone: "(11) 99999-1111", service: "maquiagem", time: "16:30", status: "confirmado", observations: "Maquiagem para festa", date: "2024-12-20" },
+            { id: 12, name: "Joana Santos", phone: "(11) 99999-2222", service: "unha", time: "15:00", status: "confirmado", observations: "Esmaltação francesa", date: "2025-01-20" },
+            { id: 13, name: "Joana Santos", phone: "(11) 99999-2222", service: "cabelo", time: "09:00", status: "confirmado", observations: "Corte e hidratação", date: "2025-01-10" },
+            { id: 14, name: "Ana Costa", phone: "(11) 99999-3333", service: "cabelo", time: "11:00", status: "confirmado", observations: "Progressiva", date: "2025-01-18" },
+            { id: 15, name: "Ana Costa", phone: "(11) 99999-3333", service: "sobrancelha", time: "14:30", status: "confirmado", observations: "Micropigmentação", date: "2025-01-05" }
+        ];
+
+        let clients = [
+            {
+                id: 1,
+                name: "Maria Silva",
+                phone: "(11) 99999-1111",
+                instagram: "@maria_silva",
+                city: "São Paulo",
+                birthDate: "1990-05-15",
+                firstExperience: "2024-01-15",
+                tags: ["maquiagem", "sobrancelha"]
+            },
+            {
+                id: 2,
+                name: "Joana Santos",
+                phone: "(11) 99999-2222",
+                instagram: "@joana_santos",
+                city: "São Paulo",
+                birthDate: "1985-08-22",
+                firstExperience: "2024-03-10",
+                tags: ["unha", "cabelo"]
+            },
+            {
+                id: 3,
+                name: "Ana Costa",
+                phone: "(11) 99999-3333",
+                instagram: "@ana_costa",
+                city: "Guarulhos",
+                birthDate: "1992-12-03",
+                firstExperience: "2023-11-20",
+                tags: ["cabelo", "sobrancelha"]
+            },
+            {
+                id: 4,
+                name: "Beatriz Lima",
+                phone: "(11) 99999-4444",
+                instagram: "@beatriz_lima",
+                city: "São Caetano",
+                birthDate: "1988-04-18",
+                firstExperience: "2024-02-14",
+                tags: ["noiva", "maquiagem", "cabelo"]
+            },
+            {
+                id: 5,
+                name: "Carla Mendes",
+                phone: "(11) 99999-5555",
+                instagram: "@carla_mendes",
+                city: "Santo André",
+                birthDate: "1995-09-07",
+                firstExperience: "2024-04-05",
+                tags: ["maquiagem", "unha"]
+            },
+            {
+                id: 6,
+                name: "Diana Rocha",
+                phone: "(11) 99999-6666",
+                instagram: "@diana_rocha",
+                city: "São Paulo",
+                birthDate: "1993-11-12",
+                firstExperience: "2024-01-20",
+                tags: ["unha", "sobrancelha"]
+            },
+            {
+                id: 7,
+                name: "Elena Ferreira",
+                phone: "(11) 99999-7777",
+                instagram: "@elena_ferreira",
+                city: "Osasco",
+                birthDate: "1987-03-25",
+                firstExperience: "2023-12-15",
+                tags: ["cabelo", "maquiagem"]
+            },
+            {
+                id: 8,
+                name: "Fernanda Alves",
+                phone: "(11) 99999-8888",
+                instagram: "@fernanda_alves",
+                city: "Diadema",
+                birthDate: "1991-07-08",
+                firstExperience: "2024-04-12",
+                tags: ["maquiagem", "noiva"]
+            }
+        ];
+
+        let filteredClients = [...clients];
+        let currentTagFilter = 'all';
+
+        // Date functions
+        function formatDate(date) {
             const options = { 
                 day: 'numeric', 
                 month: 'long', 
                 year: 'numeric', 
                 weekday: 'long' 
             };
-            document.getElementById('current-date').textContent = 
-                now.toLocaleDateString('pt-BR', options);
+            return date.toLocaleDateString('pt-BR', options);
         }
-        updateDate();
+
+        function formatDateForInput(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function formatDateForDisplay(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function updateDateDisplay() {
+            document.getElementById('currentDateDisplay').textContent = formatDate(currentDate);
+        }
 
         // Navigation
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', () => {
-                // Remove active class from all menu items
                 document.querySelectorAll('.menu-item').forEach(mi => mi.classList.remove('active'));
-                // Add active class to clicked item
                 item.classList.add('active');
                 
-                // Hide all page sections
                 document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
-                // Show selected page section
                 const pageId = item.getAttribute('data-page');
                 document.getElementById(pageId).classList.add('active');
             });
         });
 
-        // Appointments data
-        let appointments = [
-            { 
-                id: 1, 
-                name: "Maria Silva", 
-                phone: "(11) 99999-1111",
-                service: "maquiagem", 
-                time: "09:00", 
-                status: "confirmado",
-                observations: "Cliente preferencial, gosta de maquiagem natural"
-            },
-            { 
-                id: 2, 
-                name: "Joana Santos", 
-                phone: "(11) 99999-2222",
-                service: "unhas", 
-                time: "11:00", 
-                status: "pendente",
-                observations: "Primeira vez no salão"
-            }
-        ];
-
-        // DOM Elements
-        const modal = document.getElementById('appointmentModal');
-        const closeModal = document.getElementById('closeModal');
-        const appointmentForm = document.getElementById('appointmentForm');
-        const modalTitle = document.getElementById('modalTitle');
-        const appointmentIdInput = document.getElementById('appointmentId');
-        const clientNameInput = document.getElementById('clientName');
-        const clientPhoneInput = document.getElementById('clientPhone');
-        const serviceTypeInput = document.getElementById('serviceType');
-        const appointmentTimeInput = document.getElementById('appointmentTime');
-        const statusInput = document.getElementById('status');
-        const observationsInput = document.getElementById('observations');
-        const deleteBtn = document.getElementById('deleteBtn');
-        const appointmentActions = document.getElementById('appointmentActions');
-        const confirmBtn = document.getElementById('confirmBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const appointmentSlots = document.querySelectorAll('.appointment-slot');
-
-        // Event Listeners
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
+        // Date navigation
+        document.getElementById('prevDay').addEventListener('click', () => {
+            currentDate.setDate(currentDate.getDate() - 1);
+            updateDateDisplay();
+            refreshSchedule();
         });
 
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
+        document.getElementById('nextDay').addEventListener('click', () => {
+            currentDate.setDate(currentDate.getDate() + 1);
+            updateDateDisplay();
+            refreshSchedule();
         });
 
-        // Open modal for new appointment
-        appointmentSlots.forEach(slot => {
-            slot.addEventListener('click', (e) => {
-                // Ignore clicks on existing appointments
-                if (e.target.closest('.appointment')) return;
-                
-                const time = slot.getAttribute('data-time');
-                const service = slot.parentElement.getAttribute('data-service');
-                
-                modalTitle.textContent = 'Novo Agendamento';
-                appointmentForm.reset();
-                appointmentIdInput.value = '';
-                serviceTypeInput.value = service;
-                appointmentTimeInput.value = time;
-                deleteBtn.style.display = 'none';
-                appointmentActions.style.display = 'none';
-                
-                modal.style.display = 'flex';
+        // Schedule functions
+        function createScheduleGrid() {
+            const scheduleGrid = document.getElementById('scheduleGrid');
+            const services = ['maquiagem', 'unhas', 'cabelos', 'noivas'];
+            const timeSlots = [
+                '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
+                '11:00', '11:30', '12:00', '12:30', '13:00', '13:30',
+                '14:00', '14:30', '15:00', '15:30', '16:00', '16:30',
+                '17:00', '17:30', '18:00'
+            ];
+
+            scheduleGrid.innerHTML = '';
+
+            services.forEach(service => {
+                const column = document.createElement('div');
+                column.className = 'service-column';
+                column.setAttribute('data-service', service);
+
+                const header = document.createElement('div');
+                header.className = 'service-column-header';
+                header.textContent = service.charAt(0).toUpperCase() + service.slice(1);
+                column.appendChild(header);
+
+                timeSlots.forEach(time => {
+                    const slot = document.createElement('div');
+                    slot.className = 'appointment-slot';
+                    slot.setAttribute('data-time', time);
+                    column.appendChild(slot);
+                });
+
+                scheduleGrid.appendChild(column);
             });
-        });
 
-        // Open modal for editing existing appointment
-        function addAppointmentClickListeners() {
-            document.querySelectorAll('.appointment').forEach(app => {
-                app.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const id = app.getAttribute('data-id');
-                    const appointment = appointments.find(a => a.id == id);
+            addScheduleEventListeners();
+        }
+
+        function addScheduleEventListeners() {
+            document.querySelectorAll('.appointment-slot').forEach(slot => {
+                slot.addEventListener('click', (e) => {
+                    if (e.target.closest('.appointment')) return;
                     
-                    if (appointment) {
-                        modalTitle.textContent = 'Editar Agendamento';
-                        appointmentIdInput.value = appointment.id;
-                        clientNameInput.value = appointment.name;
-                        clientPhoneInput.value = appointment.phone || '';
-                        serviceTypeInput.value = appointment.service;
-                        appointmentTimeInput.value = appointment.time;
-                        statusInput.value = appointment.status;
-                        observationsInput.value = appointment.observations || '';
-                        deleteBtn.style.display = 'block';
-                        
-                        // Show action buttons only for pending appointments
-                        if (appointment.status === 'pendente') {
-                            appointmentActions.style.display = 'flex';
-                        } else {
-                            appointmentActions.style.display = 'none';
-                        }
-                        
-                        modal.style.display = 'flex';
-                    }
+                    const time = slot.getAttribute('data-time');
+                    const service = slot.parentElement.getAttribute('data-service');
+                    
+                    openAppointmentModal(null, service, time);
                 });
             });
         }
 
-        // Confirm appointment
-        confirmBtn.addEventListener('click', () => {
-            const id = appointmentIdInput.value;
-            if (id) {
-                const index = appointments.findIndex(a => a.id == id);
-                if (index !== -1) {
-                    appointments[index].status = 'confirmado';
-                    statusInput.value = 'confirmado';
-                    refreshAppointments();
-                }
-            }
-        });
-
-        // Cancel appointment
-        cancelBtn.addEventListener('click', () => {
-            const id = appointmentIdInput.value;
-            if (id) {
-                const index = appointments.findIndex(a => a.id == id);
-                if (index !== -1) {
-                    appointments[index].status = 'cancelado';
-                    statusInput.value = 'cancelado';
-                    refreshAppointments();
-                }
-            }
-        });
-
-        // Form submission
-        appointmentForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        function refreshSchedule() {
+            createScheduleGrid();
             
-            const id = appointmentIdInput.value;
-            const name = clientNameInput.value;
-            const phone = clientPhoneInput.value;
-            const service = serviceTypeInput.value;
-            const time = appointmentTimeInput.value;
-            const status = statusInput.value;
-            const observations = observationsInput.value;
+            const currentDateStr = formatDateForInput(currentDate);
+            const dayAppointments = appointments.filter(app => app.date === currentDateStr);
             
-            if (id) {
-                // Update existing appointment
-                const index = appointments.findIndex(a => a.id == id);
-                if (index !== -1) {
-                    appointments[index] = { 
-                        id: parseInt(id), 
-                        name, 
-                        phone, 
-                        service, 
-                        time, 
-                        status, 
-                        observations 
-                    };
-                }
-            } else {
-                // Create new appointment
-                const newId = Math.max(0, ...appointments.map(a => a.id)) + 1;
-                appointments.push({ 
-                    id: newId, 
-                    name, 
-                    phone, 
-                    service, 
-                    time, 
-                    status, 
-                    observations 
-                });
-            }
-            
-            refreshAppointments();
-            modal.style.display = 'none';
-        });
-
-        // Delete appointment
-        deleteBtn.addEventListener('click', () => {
-            const id = appointmentIdInput.value;
-            if (id && confirm('Tem certeza que deseja excluir este agendamento?')) {
-                appointments = appointments.filter(a => a.id != id);
-                refreshAppointments();
-                modal.style.display = 'none';
-            }
-        });
-
-        // Refresh appointments display
-        function refreshAppointments() {
-            // Clear all appointments
-            document.querySelectorAll('.appointment').forEach(app => {
-                app.remove();
-            });
-            
-            // Render appointments
-            appointments.forEach(app => {
+            dayAppointments.forEach(app => {
                 const slot = document.querySelector(`.service-column[data-service="${app.service}"] .appointment-slot[data-time="${app.time}"]`);
                 
                 if (slot) {
@@ -1198,24 +1614,480 @@
                     `;
                     
                     slot.appendChild(appointmentEl);
+                    
+                    appointmentEl.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openAppointmentModal(app.id);
+                    });
                 }
             });
             
-            // Update service counts
+            updateServiceCounts();
+        }
+
+        function updateServiceCounts() {
             const services = ['maquiagem', 'unhas', 'cabelos', 'noivas'];
+            const currentDateStr = formatDateForInput(currentDate);
+            
             services.forEach(service => {
-                const count = appointments.filter(a => a.service === service && a.status !== 'cancelado').length;
+                const count = appointments.filter(a => 
+                    a.service === service && 
+                    a.status !== 'cancelado' && 
+                    a.date === currentDateStr
+                ).length;
                 const countEl = document.getElementById(`${service}-count`);
                 if (countEl) {
                     countEl.textContent = count;
                 }
             });
-            
-            // Re-add click listeners
-            addAppointmentClickListeners();
         }
 
-        // Initialize charts
+        // Client functions
+        function renderClientsTable() {
+            const tableBody = document.getElementById('clientsTableBody');
+            tableBody.innerHTML = '';
+            
+            filteredClients.forEach(client => {
+                const row = document.createElement('tr');
+                
+                const age = calculateAge(client.birthDate);
+                const experienceTime = calculateExperienceTime(client.firstExperience);
+                
+                row.innerHTML = `
+                    <td class="client-name-cell">${client.name}</td>
+                    <td>${client.phone}</td>
+                    <td>${client.city}</td>
+                    <td>${client.instagram || '-'}</td>
+                    <td>${age} anos</td>
+                    <td>${experienceTime}</td>
+                    <td class="client-tags-cell">
+                        ${client.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </td>
+                    <td class="client-actions-cell">
+                        <button class="btn btn-primary btn-small" onclick="showClientDetails(${client.id})">Detalhes</button>
+                        <button class="btn btn-secondary btn-small" onclick="editClient(${client.id})">Editar</button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function filterClients() {
+            const searchTerm = document.getElementById('clientSearch').value.toLowerCase();
+            
+            filteredClients = clients.filter(client => {
+                const matchesSearch = client.name.toLowerCase().includes(searchTerm) || 
+                                    client.phone.includes(searchTerm);
+                
+                const matchesTag = currentTagFilter === 'all' || client.tags.includes(currentTagFilter);
+                
+                return matchesSearch && matchesTag;
+            });
+            
+            renderClientsTable();
+        }
+
+        function calculateAge(birthDate) {
+            const today = new Date();
+            const birth = new Date(birthDate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+
+        function calculateExperienceTime(firstExperience) {
+            const today = new Date();
+            const first = new Date(firstExperience);
+            const diffTime = Math.abs(today - first);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays < 30) {
+                return `${diffDays} dias`;
+            } else if (diffDays < 365) {
+                const months = Math.floor(diffDays / 30);
+                return `${months} ${months === 1 ? 'mês' : 'meses'}`;
+            } else {
+                const years = Math.floor(diffDays / 365);
+                return `${years} ${years === 1 ? 'ano' : 'anos'}`;
+            }
+        }
+
+        function showClientDetails(clientId) {
+            const client = clients.find(c => c.id === clientId);
+            if (!client) return;
+            
+            // Populate client details
+            document.getElementById('clientAvatar').textContent = client.name.charAt(0).toUpperCase();
+            document.getElementById('clientDetailsName').textContent = client.name;
+            document.getElementById('clientDetailsPhone').textContent = `📞 ${client.phone}`;
+            document.getElementById('clientDetailsCity').textContent = `📍 ${client.city}`;
+            document.getElementById('clientDetailsInstagram').textContent = client.instagram || '-';
+            document.getElementById('clientDetailsAge').textContent = `${calculateAge(client.birthDate)} anos`;
+            document.getElementById('clientDetailsExperience').textContent = calculateExperienceTime(client.firstExperience);
+            document.getElementById('clientDetailsBirthDate').textContent = formatDateForDisplay(client.birthDate);
+            document.getElementById('clientDetailsFirstExperience').textContent = formatDateForDisplay(client.firstExperience);
+            
+            // Populate tags
+            const tagsContainer = document.getElementById('clientDetailsTags');
+            tagsContainer.innerHTML = client.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            
+            // Get client's appointment history (last 3 appointments)
+            const clientAppointments = appointments
+                .filter(app => app.name === client.name && app.status === 'confirmado')
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 3);
+            
+            // Populate appointment history
+            const historyContainer = document.getElementById('appointmentsHistoryContainer');
+            if (clientAppointments.length === 0) {
+                historyContainer.innerHTML = '<div class="no-appointments">Nenhum atendimento realizado ainda.</div>';
+            } else {
+                historyContainer.innerHTML = clientAppointments.map(app => `
+                    <div class="appointment-history-item">
+                        <div class="appointment-history-header">
+                            <div class="appointment-service">${app.service}</div>
+                            <div class="appointment-date">${formatDateForDisplay(app.date)} - ${app.time}</div>
+                        </div>
+                        <div class="appointment-details">${app.observations || 'Sem observações'}</div>
+                    </div>
+                `).join('');
+            }
+            
+            // Show modal
+            document.getElementById('clientDetailsModal').style.display = 'flex';
+        }
+
+        function editClient(clientId) {
+            const client = clients.find(c => c.id === clientId);
+            if (client) {
+                openClientModal(client);
+            }
+        }
+
+        function openClientModal(client = null) {
+            const modal = document.getElementById('clientModal');
+            const modalTitle = document.getElementById('clientModalTitle');
+            const form = document.getElementById('clientForm');
+            const deleteBtn = document.getElementById('deleteClientBtn');
+            
+            form.reset();
+            clearTags();
+            
+            if (client) {
+                modalTitle.textContent = 'Editar Cliente';
+                document.getElementById('clientId').value = client.id;
+                document.getElementById('clientFullName').value = client.name;
+                document.getElementById('clientPhoneNumber').value = client.phone;
+                document.getElementById('clientInstagram').value = client.instagram || '';
+                document.getElementById('clientCity').value = client.city;
+                document.getElementById('clientBirthDate').value = client.birthDate;
+                document.getElementById('clientFirstExperience').value = client.firstExperience;
+                
+                client.tags.forEach(tag => addTag(tag));
+                deleteBtn.style.display = 'block';
+            } else {
+                modalTitle.textContent = 'Novo Cliente';
+                document.getElementById('clientId').value = '';
+                deleteBtn.style.display = 'none';
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        // Appointment modal functions
+        function openAppointmentModal(appointmentId = null, service = null, time = null) {
+            const modal = document.getElementById('appointmentModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const form = document.getElementById('appointmentForm');
+            const deleteBtn = document.getElementById('deleteBtn');
+            const appointmentActions = document.getElementById('appointmentActions');
+            
+            form.reset();
+            
+            if (appointmentId) {
+                const appointment = appointments.find(a => a.id == appointmentId);
+                if (appointment) {
+                    modalTitle.textContent = 'Editar Agendamento';
+                    document.getElementById('appointmentId').value = appointment.id;
+                    document.getElementById('clientName').value = appointment.name;
+                    document.getElementById('clientPhone').value = appointment.phone || '';
+                    document.getElementById('serviceType').value = appointment.service;
+                    document.getElementById('appointmentTime').value = appointment.time;
+                    document.getElementById('status').value = appointment.status;
+                    document.getElementById('observations').value = appointment.observations || '';
+                    deleteBtn.style.display = 'block';
+                    
+                    if (appointment.status === 'pendente') {
+                        appointmentActions.style.display = 'flex';
+                    } else {
+                        appointmentActions.style.display = 'none';
+                    }
+                }
+            } else {
+                modalTitle.textContent = 'Novo Agendamento';
+                document.getElementById('appointmentId').value = '';
+                if (service) document.getElementById('serviceType').value = service;
+                if (time) document.getElementById('appointmentTime').value = time;
+                deleteBtn.style.display = 'none';
+                appointmentActions.style.display = 'none';
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        // Tags functionality
+        let currentTags = [];
+
+        function addTag(tagText) {
+            if (tagText && !currentTags.includes(tagText)) {
+                currentTags.push(tagText);
+                renderTags();
+            }
+        }
+
+        function removeTag(tagText) {
+            currentTags = currentTags.filter(tag => tag !== tagText);
+            renderTags();
+        }
+
+        function clearTags() {
+            currentTags = [];
+            renderTags();
+        }
+
+        function renderTags() {
+            const tagsInput = document.getElementById('tagsInput');
+            const tagInput = document.getElementById('tagInput');
+            
+            // Clear existing tags
+            const existingTags = tagsInput.querySelectorAll('.tag-item');
+            existingTags.forEach(tag => tag.remove());
+            
+            // Add current tags
+            currentTags.forEach(tag => {
+                const tagElement = document.createElement('div');
+                tagElement.className = 'tag-item';
+                tagElement.innerHTML = `
+                    ${tag}
+                    <span class="tag-remove" onclick="removeTag('${tag}')">&times;</span>
+                `;
+                tagsInput.insertBefore(tagElement, tagInput);
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search functionality
+            document.getElementById('clientSearch').addEventListener('input', filterClients);
+            
+            // Filter tags functionality
+            document.querySelectorAll('.filter-tag').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+                    tag.classList.add('active');
+                    currentTagFilter = tag.getAttribute('data-tag');
+                    filterClients();
+                });
+            });
+
+            // Close modals
+            document.getElementById('closeModal').addEventListener('click', () => {
+                document.getElementById('appointmentModal').style.display = 'none';
+            });
+
+            document.getElementById('closeClientModal').addEventListener('click', () => {
+                document.getElementById('clientModal').style.display = 'none';
+            });
+
+            document.getElementById('closeClientDetailsModal').addEventListener('click', () => {
+                document.getElementById('clientDetailsModal').style.display = 'none';
+            });
+
+            // Close modals on outside click
+            window.addEventListener('click', (e) => {
+                const appointmentModal = document.getElementById('appointmentModal');
+                const clientModal = document.getElementById('clientModal');
+                const clientDetailsModal = document.getElementById('clientDetailsModal');
+                
+                if (e.target === appointmentModal) {
+                    appointmentModal.style.display = 'none';
+                }
+                if (e.target === clientModal) {
+                    clientModal.style.display = 'none';
+                }
+                if (e.target === clientDetailsModal) {
+                    clientDetailsModal.style.display = 'none';
+                }
+            });
+
+            // Add client button
+            document.getElementById('addClientBtn').addEventListener('click', () => {
+                openClientModal();
+            });
+
+            // Tag input
+            document.getElementById('tagInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const tagText = e.target.value.trim();
+                    if (tagText) {
+                        addTag(tagText);
+                        e.target.value = '';
+                    }
+                }
+            });
+
+            // Appointment form
+            document.getElementById('appointmentForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const id = document.getElementById('appointmentId').value;
+                const name = document.getElementById('clientName').value;
+                const phone = document.getElementById('clientPhone').value;
+                const service = document.getElementById('serviceType').value;
+                const time = document.getElementById('appointmentTime').value;
+                const status = document.getElementById('status').value;
+                const observations = document.getElementById('observations').value;
+                const date = formatDateForInput(currentDate);
+                
+                if (id) {
+                    const index = appointments.findIndex(a => a.id == id);
+                    if (index !== -1) {
+                        appointments[index] = { 
+                            id: parseInt(id), 
+                            name, 
+                            phone, 
+                            service, 
+                            time, 
+                            status, 
+                            observations,
+                            date: appointments[index].date
+                        };
+                    }
+                } else {
+                    const newId = Math.max(0, ...appointments.map(a => a.id)) + 1;
+                    appointments.push({ 
+                        id: newId, 
+                        name, 
+                        phone, 
+                        service, 
+                        time, 
+                        status, 
+                        observations,
+                        date
+                    });
+                }
+                
+                refreshSchedule();
+                document.getElementById('appointmentModal').style.display = 'none';
+            });
+
+            // Client form
+            document.getElementById('clientForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const id = document.getElementById('clientId').value;
+                const name = document.getElementById('clientFullName').value;
+                const phone = document.getElementById('clientPhoneNumber').value;
+                const instagram = document.getElementById('clientInstagram').value;
+                const city = document.getElementById('clientCity').value;
+                const birthDate = document.getElementById('clientBirthDate').value;
+                const firstExperience = document.getElementById('clientFirstExperience').value;
+                
+                if (id) {
+                    const index = clients.findIndex(c => c.id == id);
+                    if (index !== -1) {
+                        clients[index] = {
+                            id: parseInt(id),
+                            name,
+                            phone,
+                            instagram,
+                            city,
+                            birthDate,
+                            firstExperience,
+                            tags: [...currentTags]
+                        };
+                    }
+                } else {
+                    const newId = Math.max(0, ...clients.map(c => c.id)) + 1;
+                    clients.push({
+                        id: newId,
+                        name,
+                        phone,
+                        instagram,
+                        city,
+                        birthDate,
+                        firstExperience,
+                        tags: [...currentTags]
+                    });
+                }
+                
+                filterClients();
+                document.getElementById('clientModal').style.display = 'none';
+            });
+
+            // Delete buttons
+            document.getElementById('deleteBtn').addEventListener('click', () => {
+                const id = document.getElementById('appointmentId').value;
+                if (id && confirm('Tem certeza que deseja excluir este agendamento?')) {
+                    appointments = appointments.filter(a => a.id != id);
+                    refreshSchedule();
+                    document.getElementById('appointmentModal').style.display = 'none';
+                }
+            });
+
+            document.getElementById('deleteClientBtn').addEventListener('click', () => {
+                const id = document.getElementById('clientId').value;
+                if (id && confirm('Tem certeza que deseja excluir este cliente?')) {
+                    clients = clients.filter(c => c.id != id);
+                    filterClients();
+                    document.getElementById('clientModal').style.display = 'none';
+                }
+            });
+
+            // Appointment action buttons
+            document.getElementById('confirmBtn').addEventListener('click', () => {
+                const id = document.getElementById('appointmentId').value;
+                if (id) {
+                    const index = appointments.findIndex(a => a.id == id);
+                    if (index !== -1) {
+                        appointments[index].status = 'confirmado';
+                        document.getElementById('status').value = 'confirmado';
+                        refreshSchedule();
+                    }
+                }
+            });
+
+            document.getElementById('cancelBtn').addEventListener('click', () => {
+                const id = document.getElementById('appointmentId').value;
+                if (id) {
+                    const index = appointments.findIndex(a => a.id == id);
+                    if (index !== -1) {
+                        appointments[index].status = 'cancelado';
+                        document.getElementById('status').value = 'cancelado';
+                        refreshSchedule();
+                    }
+                }
+            });
+
+            // Initialize
+            updateDateDisplay();
+            refreshSchedule();
+            renderClientsTable();
+            
+            // Initialize charts
+            setTimeout(() => {
+                initCharts();
+            }, 100);
+        });
+
+        // Charts initialization
         function initCharts() {
             // Services Chart
             const servicesCtx = document.getElementById('servicesChart').getContext('2d');
@@ -1226,10 +2098,10 @@
                     datasets: [{
                         data: [25, 30, 35, 10],
                         backgroundColor: [
-                            '#c39086',
-                            '#d4a59a',
-                            '#e2bdb5',
-                            '#f4e4e1'
+                            '#C16B58',
+                            '#D4887A',
+                            '#E0E0E0',
+                            '#808080'
                         ],
                         borderWidth: 0
                     }]
@@ -1252,10 +2124,10 @@
                 data: {
                     labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
                     datasets: [{
-                        label: 'Receita',
-                        data: [320, 450, 380, 520, 680, 890, 420],
-                        borderColor: '#c39086',
-                        backgroundColor: 'rgba(195, 144, 134, 0.1)',
+                        label: 'Agendamentos',
+                        data: [120, 100, 150, 200, 230, 250, 420],
+                        borderColor: '#C16B58',
+                        backgroundColor: 'rgba(193, 107, 88, 0.1)',
                         tension: 0.4,
                         fill: true
                     }]
@@ -1291,12 +2163,12 @@
                         {
                             label: 'Curtidas',
                             data: [45, 52, 38, 67, 89, 125, 78],
-                            backgroundColor: 'rgba(195, 144, 134, 0.8)'
+                            backgroundColor: 'rgba(193, 107, 88, 0.8)'
                         },
                         {
                             label: 'Comentários',
                             data: [8, 12, 6, 15, 18, 25, 14],
-                            backgroundColor: 'rgba(212, 165, 154, 0.8)'
+                            backgroundColor: 'rgba(212, 136, 122, 0.8)'
                         }
                     ]
                 },
@@ -1326,22 +2198,22 @@
                         {
                             label: 'Instagram',
                             data: [450, 520, 480, 680],
-                            borderColor: '#c39086',
-                            backgroundColor: 'rgba(195, 144, 134, 0.1)',
+                            borderColor: '#C16B58',
+                            backgroundColor: 'rgba(193, 107, 88, 0.1)',
                             tension: 0.4
                         },
                         {
                             label: 'Facebook',
                             data: [280, 320, 290, 380],
-                            borderColor: '#d4a59a',
-                            backgroundColor: 'rgba(212, 165, 154, 0.1)',
+                            borderColor: '#D4887A',
+                            backgroundColor: 'rgba(212, 136, 122, 0.1)',
                             tension: 0.4
                         },
                         {
                             label: 'TikTok',
                             data: [150, 180, 220, 280],
-                            borderColor: '#e2bdb5',
-                            backgroundColor: 'rgba(226, 189, 181, 0.1)',
+                            borderColor: '#E0E0E0',
+                            backgroundColor: 'rgba(224, 224, 224, 0.1)',
                             tension: 0.4
                         }
                     ]
@@ -1362,14 +2234,6 @@
                 }
             });
         }
-
-        // Initialize
-        refreshAppointments();
-        
-        // Initialize charts when dashboard is visible
-        setTimeout(() => {
-            initCharts();
-        }, 100);
     </script>
 </body>
 </html>
